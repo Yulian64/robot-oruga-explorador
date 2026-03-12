@@ -1,11 +1,11 @@
 #include <WiFi.h>
 #include <WebServer.h>
 
-// 📶 Configura tus credenciales Wi-Fi
+// Configura tus credenciales Wi-Fi
 const char *ssid = "Robot_Camara";
 const char *password = "12345678";
 
-// 🧠 Pines del L298N
+// Pines del L298N
 const int ENA = 14;
 const int IN1 = 12;
 const int IN2 = 13;
@@ -13,14 +13,14 @@ const int ENB = 33;
 const int IN3 = 15;
 const int IN4 = 32;
 
-// 🔔 Otros pines
+// Otros pines
 const int buzPin = 4;
 const int ledPin = 2;
 
-// 🔧 Velocidad inicial de los motores (0-255)
+// Velocidad inicial de los motores (0-255)
 int valSpeed = 200;
 
-// 🌐 Servidor Web
+// Servidor Web
 WebServer server(80);
 
 // --- DECLARACIÓN DE FUNCIONES ---
@@ -46,14 +46,14 @@ void setup()
     ledcAttach(ENB, 5000, 8);
     Stop();
 
-    // 🔗 Configurar Wi-Fi como punto de acceso
+    // Configurar Wi-Fi como punto de acceso
     Serial.println("Creando punto de acceso WiFi...");
     WiFi.softAP(ssid, password);
     IPAddress IP = WiFi.softAPIP();
     Serial.print("IP del robot: ");
     Serial.println(IP);
 
-    // 📄 Rutas del servidor
+    // Rutas del servidor
     server.on("/", handleRoot);
     server.on("/F", []()
               { forward(); server.send(200, "text/plain", "Forward"); });
@@ -72,7 +72,7 @@ void setup()
     server.on("/u", []()
               { digitalWrite(ledPin, LOW); server.send(200, "text/plain", "LED OFF"); });
 
-    // 🧭 Nueva ruta para actualizar la velocidad
+    // Nueva ruta para actualizar la velocidad
     server.on("/speed", []()
               {
 if (server.hasArg("value")) {
@@ -90,7 +90,7 @@ void loop()
     server.handleClient();
 }
 
-// 🌍 Página web principal
+// Página web principal
 void handleRoot()
 {
     String esp32_cam_ip = "192.168.4.2"; // Ajusta según ESP32-CAM
@@ -280,7 +280,7 @@ fetch('/speed?value=' + val)
 )-";
     server.send(200, "text/html", html);
 }
-// 🚗 Funciones de movimiento
+// Funciones de movimiento
 void forward()
 {
     ledcWrite(ENA, valSpeed);
